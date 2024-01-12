@@ -1,0 +1,31 @@
+{% extends "students/base.html" %}
+
+
+{% block body %}
+    <h3 class="text-center m-4" >Modifier les informations de l'étudiant</h3>
+
+    
+    {% if success %}
+    <div class="alert alert-success " role="alert">
+        enregistrement reussi!!
+        <a href="{% url 'index' %}" class="alert-link">Aller à l'accueil</a>
+    </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card border-light mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-pen-to-square fa-lg"></i>modification les informations de l'étudiant
+                    </div>
+                    <div class="card-body">
+                      <form action="" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">modifier</button>
+                        <a href="{% url 'index' %}" class="btn btn-secondary">annuler</a>
+                      </form>
+                    </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}    

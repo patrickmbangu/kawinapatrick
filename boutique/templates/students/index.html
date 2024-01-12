@@ -1,0 +1,163 @@
+{% extends "students/base.html" %}
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <title>Gestion des étudiants</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+   <div class="container-fluid">
+    <h3 class="m-4" >Tous les étudiants</h3>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand">
+                <i class="fa-solid fa-list  fa-lg"></i> </i>  Barre de Recherche 
+              </a>
+              <form class="d-flex">
+                <input name="item" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Rechercher</button>
+              </form>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <br>
+    
+    <div class="row">
+        <div class="col-12" >
+            {% if students %}
+            <div class="card border-light  ms-4 me-4 mb-4">
+                <div class="card-header">
+                    <i class="fa-solid fa-list  fa-lg"></i>   Etudiants enregistrés
+                </div>
+                <div class="card-body">
+                  <p class="card-text">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th scope="col">MATRICULE</th>
+                                <th scope="col">NOM</th>
+                                <th scope="col">POST NOM</th>
+                                <th scope="col">PRENOM</th>
+                                <th scope="col">EMAIL</th>
+                                <th scope="col">AGE</th>
+                                <th scope="col">PROMOTION</th>
+                                <th scope="col">Action</th>
+                                
+                              </tr>
+                            </thead>
+                            <tbody id="myTable">
+                                {% for student in students %}
+                                    <tr>
+                                        <td>{{ student.matricule }}</td>
+                                        <td>{{ student.nom }}</td>
+                                        <td>{{ student.post_nom }}</td>
+                                        <td>{{ student.prenom }}</td>
+                                        <td>{{ student.email }}</td>
+                                        <td>{{ student.age }}</td>
+                                        <td>{{ student.promotion }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success me-1" href="{% url 'view_student' student.id %}" 
+                                            data-bs-toggle="modal"  data-bs-target="#myModal{{student.id}}">
+
+                                            <i class="fa-solid fa-circle-info fa-lg"></i>
+                                            
+                                        </button>
+
+                                            <!--Modal View Student-->
+                                            <div class="modal" id="myModal{{student.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <h5 class="modal-title">
+                                                         Etudiant: {{ student.nom }} {{ student.prenom }}
+                                                      </h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true"></span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <ul class="list-unstyled">
+                                                        <li>MATRICULE           : <strong>  {{ student.matricule }}</strong></li>
+                                                        <li>NOM DE L'ETUDIANT     :<strong>   {{ student.nom }}</strong></li>
+                                                        <li>POST-NOM DE L'ETUDIANT  :<strong>   {{ student.post_nom }}</strong></li>
+                                                        <li>PRENOM DE L'ETUDIANT  :<strong>   {{ student.prenom }}</strong></li>
+                                                        <li>EMAIL DE L'ETUDIANT  : <strong>  {{ student.email }}</strong></li>
+                                                        <li>AGE DE L'ETUDIANT   :<strong>   {{ student.age }}</strong></li>
+                                                        <li>PROMOTION DE L'ETUDIANT   : <strong>  {{ student.promotion }}</strong></li>
+                                                      </ul>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Fermer</button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <a class="btn btn-warning me-1" href="{% url 'edit' student.id %}">
+                                                <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                              </a>
+
+
+                                              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{student.id}}">
+                                                <i class="fa-solid fa-trash-can "></i>
+                                              </button>
+
+                                              <!--MOdal Delete Student-->
+
+
+                                              <div class="modal" id="delete{{student.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <h5 class="modal-title">
+                                                         Etudiant: {{ student.nom }} {{ student.post_nom }}
+                                                      </h5>
+                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true"></span>
+                                                      </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                      <p>Voulez vous supprimer cet étudiant?</p>
+                                                    <div class="modal-footer">
+                                                      <form action="{% url 'delete' student.id %}" method="POST">
+                                                        {% csrf_token %}
+                                                        <input type="submit" class="btn btn-primary" value="Delete">
+                                                      </form>
+                                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">annuler</button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+        </div>
+            {% else %}
+                <h5 class="alert alert-primary ms-4 me-4">Aucun enregistrement dans la base des données</h5>
+            {% endif %}
+    </div>
+   </div>
+   <script>
+      $(document).ready(function(){
+        $("#search").on("keyup", function(){
+          var value = $(this).val().toLowerCase();
+          $("#myTable tr").filter(function(){
+            $(this).toggle($(this).text().toLocaleLowerCase().indexOf(value)>-1)
+          });
+        });
+      });
+   </script>
+{% endblock %}

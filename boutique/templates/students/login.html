@@ -1,0 +1,54 @@
+{% block body %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta  http-equiv="X-UA-Compatible " content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Registration</title>
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="script.js">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    
+    <div class="wrapper">
+        <span class="bg-animate"></span>
+        <span class="bg-animate2"></span>
+        <div class="form-box login">
+            PATRICK MBANGU KAWINA
+            <h2 class="animation" style="--i:0; --i:21;">Login</h2>
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="input-box animation" style="--i:1;  --i:22;">
+                    <input type="text" name="username" required>
+                    <label for="username">Nom Utilisateur</label>
+                    <i class='bx bxs-user'></i>
+                </div>
+                <div class="input-box animation" style="--i:2; --i:23;">
+                    <input type="password" name="password" required>
+                    <label for="password">Mot de passe</label>
+                    <i class='bx bxs-lock' ></i>
+                </div>
+                    <button  type="submit" class="btn animation" style="--i:3; --i:24;">Se connecter</button>
+                <div class="logreg-link animation"  style="--i:4; --i:25;">
+                    <p>N'avez vous pas un compte?
+                        <a href="" class="register-link">Enregistrez vous</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+        <div class="info-text login">
+            <h2 class="animation" style="--i:0;  --j:20;">Système de gestion des étudiants</h2>
+            <p  class="animation" style="--i:1;   --j:21;">Bonjour! Bienvenu sur votre site!</p>
+        </div>
+       
+    <script src="script.js"></script>
+</body>
+</html>
+
+{% endblock %}
+
+
